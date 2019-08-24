@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              	  http://www.springframework.org/schema/context
+              	   http://www.springframework.org/schema/context/spring-context.xsd
+
+      ">
+    <!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+           <!--xmlns:context="http://www.springframework.org/schema/context"-->
+           <!--xmlns:hadoop="http://www.springframework.org/schema/hadoop"-->
+           <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+           <!--xsi:schemaLocation="http://www.springframework.org/schema/beans-->
+              <!--http://www.springframework.org/schema/beans/spring-beans.xsd-->
+              	  <!--http://www.springframework.org/schema/context-->
+              	   <!--http://www.springframework.org/schema/context/spring-context.xsd-->
+     <!--http://www.springframework.org/schema/hadoop-->
+      <!--http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">-->
+
+    <bean id="hiveDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <constructor-arg name="driver">
+            <bean id="hiveDriver" class="${hive.driver}"/>
+        </constructor-arg>
+        <constructor-arg name="url" value="${hive.url}"/>
+        <constructor-arg name="username" value="${hive.username}"/>
+        <constructor-arg name="password" value="${hive.password}"/>
+    </bean>
+
+    <!--&lt;!&ndash;2.4.0以后才有？ &ndash;&gt;-->
+    <!--<hadoop:hive-client-factory id="hiveClientFactory" hive-data-source-ref="hiveDataSource"/>-->
+
+    <!--<bean id="hiveDruidDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">-->
+        <!--<property name="driverClassName" value="${hive.driver}" />-->
+        <!--<property name="url" value="${hive.url}" />-->
+        <!--<property name="username" value="${hive.username}" />-->
+        <!--<property name="password" value="${hive.password}" />-->
+        <!--&lt;!&ndash;initialSize: 初始化连接&ndash;&gt;-->
+        <!--<property name="initialSize" value="${hive.initialSize}"/>-->
+        <!--&lt;!&ndash;minIdle: 最小空闲连接&ndash;&gt;-->
+        <!--<property name="minIdle" value="${hive.minIdle}"/>-->
+        <!--&lt;!&ndash;maxActive: 最大连接数量&ndash;&gt;-->
+        <!--<property name="maxActive" value="${hive.maxActive}"/>-->
+        <!--<property name="maxWait" value="${hive.maxWait}"/>-->
+        <!--<property name="validationQuery" value="select 1"/>-->
+        <!--<property name="filters" value="stat,slf4j" />-->
+    <!--</bean>-->
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg name="dataSource" ref="hiveDataSource"/>
+    </bean>
+
+    <context:component-scan base-package="com.jessin.practice.dao"/>
+
+    <context:property-placeholder location="classpath:hive.properties" />
+
+    <!--<hadoop:hive-template id="hiveTemplate"/>-->
+</beans>
